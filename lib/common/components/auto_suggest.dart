@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:billing_app/common/components/text_input.dart';
 import 'package:billing_app/common/consants/style-constants.dart';
 import 'package:flutter/material.dart';
 
 class AutoSuggest<T extends Object> extends StatelessWidget {
-  BuildContext context;
+  final BuildContext context;
   TextEditingController controller;
   String? label;
   String? type;
@@ -13,28 +15,34 @@ class AutoSuggest<T extends Object> extends StatelessWidget {
   double? height;
   EdgeInsets? padding;
   FocusNode? focusNode;
-  Future<Iterable<T>> items;
   TextInputType? keyboardType;
+
   String? Function(String?)? validator;
   String Function(T) displayStringForOption;
   void Function(T)? onSelected;
+  final Future<Iterable<T>> Function(TextEditingValue)
+      optionsBuilderFunction;
 
-  AutoSuggest({Key? key,
-    required this.context,
-    required this.controller,
-    this.label,
-    this.type,
-    this.width,
-    this.height,
-    this.padding,
-    this.keyboardType,
-    this.obscureText = false,
-    this.isRequired = false,
-    this.validator,
-    required this.items,
-    required this.displayStringForOption,
-    required this.onSelected,
-    this.focusNode})
+  String displayProperty;
+
+  AutoSuggest(
+      {Key? key,
+      required this.context,
+      required this.controller,
+      required this.optionsBuilderFunction,
+      this.label,
+      this.type,
+      this.width,
+      this.height,
+      this.padding,
+      this.keyboardType,
+      this.obscureText = false,
+      this.isRequired = false,
+      this.validator,
+    required  this.displayProperty,
+      required this.displayStringForOption,
+      required this.onSelected,
+      this.focusNode})
       : super(key: key);
 
   @override
@@ -42,12 +50,13 @@ class AutoSuggest<T extends Object> extends StatelessWidget {
     return Autocomplete<T>(
       optionsBuilder: (TextEditingValue textEditingValue) async {
         if (textEditingValue.text.length > 2) {
-          return this.items;
+          return optionsBuilderFunction
+              .call( textEditingValue);
         } else {
           return [];
         }
       },
-      displayStringForOption: this.displayStringForOption,
+      displayStringForOption:(T option) => displayStringForOption.call(option),
       fieldViewBuilder: (BuildContext context,
           TextEditingController fieldTextEditingController,
           FocusNode fieldFocusNode,

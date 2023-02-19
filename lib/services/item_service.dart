@@ -25,18 +25,26 @@ class ItemService extends BaseService {
   getGrossPrice(Item item) {
     double? discountPrice = 0;
     double? taxAmount = 0;
-    if (item.discount_unit == "1") {
-      discountPrice = item.discount ?? ((item!.price! / 100) * item!.discount!);
+    if (item.discount != null) {
+      if (item.discount_unit == "1") {
+        discountPrice =
+            item.discount ?? ((item!.price! / 100) * item!.discount!);
+      } else {
+        discountPrice = item.discount;
+      }
     } else {
-      discountPrice = item.discount;
+      discountPrice = 0;
     }
     if (item.tax_rate != null) {
       taxAmount = item.tax_rate ?? ((item!.price! / 100) * item!.tax_rate!);
+    } else {
+      taxAmount = 0;
     }
     return item.price! - discountPrice! + taxAmount;
   }
 
-  Future<Iterable<Item>> getClientsWhere(List<String> where, List<String> args, int index) async {
+  Future<Iterable<Item>> getClientsWhere(
+      List<String> where, List<String> args, int index) async {
     var db = await this.db;
     String whereCond = '';
     where.forEachIndexed((i, w) {

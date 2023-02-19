@@ -103,7 +103,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                       controller: widget.discount_unit,
                       type: 'select',
                       width: fullWidth * .43,
-                          height: fullHeight*.11,
+                      height: fullHeight * .11,
                     )),
                   ],
                 ),
@@ -117,7 +117,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 Center(
                   child: TextInput(
                     type: 'textarea',
-                    height: fullHeight*.17,
+                    height: fullHeight * .17,
                     controller: widget.description,
                     label: "Comment",
                     keyboardType: TextInputType.phone,
@@ -127,7 +127,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
                   child: Center(
                     child: Button(
-                        label: "Create Client",
+                        label: "Add Item",
                         onTap: () async {
                           Item item = Item(
                             widget.itemDTO != null
@@ -136,9 +136,15 @@ class _AddItemScreenState extends State<AddItemScreen> {
                             widget.name.value.text,
                             double.parse(widget.price.value.text),
                             int.parse(widget.quantity.value.text),
-                            double.parse(widget.discount.value.text),
-                            int.parse(widget.discount_unit.value.text),
-                            double.parse(widget.tax_rate.value.text),
+                            widget.discount.text.isNotEmpty
+                                ? double.parse(widget.discount.value.text)
+                                : null,
+                            widget.discount_unit.text.isNotEmpty
+                                ? int.parse(widget.discount_unit.value.text)
+                                : null,
+                            widget.tax_rate.text.isNotEmpty
+                                ? double.parse(widget.tax_rate.value.text)
+                                : null,
                             widget.description.value.text,
                           );
 

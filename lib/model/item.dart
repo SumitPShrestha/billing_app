@@ -18,9 +18,9 @@ class Item extends BaseModel {
     _name = obj["name"];
     _price = double.parse(obj["price"].toString());
     _quantity =int.parse( obj["quantity"].toString());
-    _discount =double.parse( obj["discount"].toString());
-    _discount_unit =int.parse( obj["discount_unit"].toString());
-    _tax_rate =double.parse( obj["tax_rate"].toString());
+    _discount =double.parse( (obj["discount"]??0.00).toString());
+    _discount_unit =int.parse( (obj["discount_unit"]??0).toString());
+    _tax_rate =double.parse( (obj["tax_rate"]??0.00).toString());
     _description = obj["description"];
   }
 

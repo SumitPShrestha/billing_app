@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io' as io;
 
 import 'package:sqflite_migration/sqflite_migration.dart';
-
 var initialScript = [
   "CREATE TABLE app_users         "
       "  (                                                                          "
@@ -84,26 +83,26 @@ var initialScript = [
 
 const migrationScript = [
   "Select * from app_users;",
-  "  CREATE TABLE app_client                                                     " +
-      "  (                                                                          " +
-      "  client_id         INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,        " +
-      "  name              TEXT                                     NOT NULL UNIQUE, " +
-      "  phone             TEXT                                     NOT NULL,        " +
-      "  email             TEXT                                     NOT NULL,        " +
-      "  contact1          TEXT,                                                     " +
-      "  contact2          TEXT                                     NOT NULL,        " +
-      "  phone1            TEXT,                                                     " +
-      "  phone2            TEXT                                     NOT NULL,        " +
-      "  billing_address1  TEXT                                     NOT NULL,        " +
-      "  billing_address2  TEXT,                                                     " +
-      "  shipping_address1 TEXT,                                                     " +
-      "  shipping_address2 TEXT,                                                     " +
-      "  created_by        INTEGER,                                                  " +
-      "  updated_by        INTEGER,                                                  " +
-      "  created_at        TEXT,                                                  " +
-      "  updated_at        TEXT                                                   " +
-      "  );                                                                         ",
-  "  CREATE TABLE app_item                                                       " +
+  // "  CREATE TABLE app_client                                                     " +
+  //     "  (                                                                          " +
+  //     "  client_id         INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,        " +
+  //     "  name              TEXT                                     NOT NULL UNIQUE, " +
+  //     "  phone             TEXT                                     NOT NULL,        " +
+  //     "  email             TEXT                                     NOT NULL,        " +
+  //     "  contact1          TEXT,                                                     " +
+  //     "  contact2          TEXT                                     NOT NULL,        " +
+  //     "  phone1            TEXT,                                                     " +
+  //     "  phone2            TEXT                                     NOT NULL,        " +
+  //     "  billing_address1  TEXT                                     NOT NULL,        " +
+  //     "  billing_address2  TEXT,                                                     " +
+  //     "  shipping_address1 TEXT,                                                     " +
+  //     "  shipping_address2 TEXT,                                                     " +
+  //     "  created_by        INTEGER,                                                  " +
+  //     "  updated_by        INTEGER,                                                  " +
+  //     "  created_at        TEXT,                                                  " +
+  //     "  updated_at        TEXT                                                   " +
+  //     "  );                                                                         ",
+  /*"  CREATE TABLE app_item                                                       " +
       "  (                                                                          " +
       "  item_id       INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,            " +
       "  name          TEXT                                     NOT NULL UNIQUE,     " +
@@ -148,7 +147,7 @@ const migrationScript = [
       "  updated_by      INTEGER,                                                    " +
       "  created_at      TEXT,                                                    " +
       "  updated_at      TEXT                                                     " +
-      "  );  ",
+      "  );  ",*/
 ];
 
 class DBHelper {
@@ -171,6 +170,7 @@ class DBHelper {
     io.Directory dbDirectory = await getApplicationDocumentsDirectory();
     String path = join(dbDirectory.path, DB_NAME);
     var db = await openDatabaseWithMigration(path, config);
+    // var db = await openDatabase(path);
     return db;
   }
 }

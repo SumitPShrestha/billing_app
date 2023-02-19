@@ -10,12 +10,17 @@ class TextInput extends StatefulWidget {
   double? width;
   double? height;
   EdgeInsets? padding;
+  EdgeInsets? margin;
   FocusNode? focusNode;
+  Widget? prefixIcon;
+  Widget? suffixIcon;
   void Function()? onTap;
 
 
   TextInputType? keyboardType;
   String? Function(String?)? validator;
+
+  void Function(String)? onChange;
 
   TextInput(
       {Key? key,
@@ -25,11 +30,15 @@ class TextInput extends StatefulWidget {
       this.width,
       this.height,
       this.padding,
+      this.margin,
       this.keyboardType,
       this.obscureText = false,
       this.isRequired = false,
       this.validator,
+      this.onChange,
       this.onTap,
+      this.prefixIcon,
+      this.suffixIcon,
       this.focusNode})
       : super(key: key);
 
@@ -110,6 +119,10 @@ class _TextInputState extends State<TextInput> {
               onTap: widget.onTap,
               onChanged: (val) {
                 isChanged = true;
+                if( widget.onChange!=null){
+                widget.onChange?.call(val);
+
+                }
                 setState(() {
                   _errorText;
                 });
@@ -118,6 +131,56 @@ class _TextInputState extends State<TextInput> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[200],
+                  prefixIcon: widget.prefixIcon??null,
+                  suffixIcon: widget.suffixIcon??null,
+                  /* label: Text(
+                    _label ?? "",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xff676666),
+
+                    ),
+                  ),*/
+
+
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 1.0, horizontal: 10.0),
+                  errorText: _errorText,
+                  errorStyle: const TextStyle(
+                      color: errorColor, fontSize: 11.5, height: .5),
+                  errorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: errorColor, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFF588FE7), width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5)))),
+            ),
+          if ( widget.type == "date")
+            TextField(
+              obscureText: widget.obscureText ?? false,
+              keyboardType: widget.keyboardType ?? TextInputType.text,
+              controller: _controller,
+              focusNode: widget.focusNode,
+              onTap: widget.onTap,
+              onChanged: (val) {
+                isChanged = true;
+                setState(() {
+                  _errorText;
+                });
+              },
+              style: TextStyle(color: Colors.grey.shade900),
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  prefixIcon: widget.prefixIcon??null,
+                  suffixIcon:Icon(Icons.calendar_today,color: primaryColorRed,),
                   /* label: Text(
                     _label ?? "",
                     style: const TextStyle(
@@ -214,6 +277,51 @@ class _TextInputState extends State<TextInput> {
                   focusedBorder: const OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF588FE7), width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5)))),
+            ),
+          if (widget.type == 'auto-suggest')
+            TextField(
+              obscureText: widget.obscureText ?? false,
+              keyboardType: widget.keyboardType ?? TextInputType.text,
+              controller: _controller,
+              onChanged: (val) {
+                isChanged = true;
+                setState(() {
+                  _errorText;
+                });
+              },
+              maxLines: 4,
+              style: TextStyle(color: Colors.grey.shade900),
+              decoration: InputDecoration(
+                  helperMaxLines: 3,
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  /* label: Text(
+                    _label ?? "",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xff676666),
+
+                    ),
+                  ),*/
+
+                  contentPadding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 10.0),
+                  errorText: _errorText,
+                  errorStyle: const TextStyle(
+                      color: errorColor, fontSize: 13.5, height: .7),
+                  errorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: errorColor, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Color(0xFF588FE7), width: 1.5),
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                   enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.5),
